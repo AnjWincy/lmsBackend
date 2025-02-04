@@ -1,16 +1,16 @@
 package com.example.demo12.Response.Learning;
 
-import com.example.demo12.Model.learning.courses;
-import com.example.demo12.Model.learning.topics;
+import com.example.demo12.Model.learning.Courses;
+import com.example.demo12.Model.learning.Topics;
 
 import java.util.List;
 
 public class CoursesResponse {
 
     private String msg;
-    private List<courses> Courses;
-    private List<topics> Topics;
-    private topics Topic;
+    private List<Courses> Course;
+    private List<Topics> Topic;
+    private com.example.demo12.Model.learning.Topics Topc;
 
 
     public String getMsg() {
@@ -21,30 +21,29 @@ public class CoursesResponse {
         this.msg = msg;
     }
 
-    public List<topics> getTopics() {
-        return Topics;
+    public List<Courses> getCourse() {
+        return Course;
     }
 
-    public void setTopics(List<topics> topics) {
-        Topics = topics;
+    public void setCourse(List<Courses> course) {
+        Course = course;
     }
 
-    public topics getTopic() {
+    public List<Topics> getTopic() {
         return Topic;
     }
 
-    public void setTopic(topics topic) {
+    public void setTopic(List<Topics> topic) {
         Topic = topic;
     }
 
-
-
-    public List<courses> getCourses() {
-        return Courses;
+    public Topics getTopc() {
+        return Topc;
     }
 
-    public void setCourses(List<courses> courses) {
-        Courses = courses;
+    public void setTopc(Topics topc) {
+        Topc = topc;
     }
+
 
 }

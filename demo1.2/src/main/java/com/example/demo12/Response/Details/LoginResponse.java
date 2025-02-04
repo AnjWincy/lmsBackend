@@ -1,25 +1,33 @@
 package com.example.demo12.Response.Details;
 
-import com.example.demo12.Model.Mark.marks;
-import com.example.demo12.Model.details.student;
+import com.example.demo12.Model.Mark.Marks;
 
 import java.util.List;
 
 public class LoginResponse {
 
-
     private String msg;
     private String email;
     private String password;
     private List<String> ids;
-    private List<marks> Marks;
+    private List<Marks> Mark;
+//    private String code;
+//
+//
+//    public String getCode() {
+//        return code;
+//    }
+//
+//    public void setCode(String code) {
+//        this.code = code;
+//    }
 
-    public List<marks> getMarks() {
-        return Marks;
+    public List<Marks> getMark() {
+        return Mark;
     }
 
-    public void setMarks(List<marks> marks) {
-        Marks = marks;
+    public void setMark(List<Marks> mark) {
+        Mark = mark;
     }
 
         public List<String> getIds() {

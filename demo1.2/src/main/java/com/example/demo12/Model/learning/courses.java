@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-public class courses {
+public class Courses {
 
 
     @Id
@@ -15,13 +15,13 @@ public class courses {
     private String start_date;
     @OneToMany
     @JoinColumn(name="c_id",referencedColumnName = "course_id")
-    private List<topics> topic;
+    private List<Topics> topic;
 
-    public List<topics> getTopic() {
+    public List<Topics> getTopic() {
         return topic;
     }
 
-    public void setTopic(List<topics> topic) {
+    public void setTopic(List<Topics> topic) {
         this.topic = topic;
     }
 

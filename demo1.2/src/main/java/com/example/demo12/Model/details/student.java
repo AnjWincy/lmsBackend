@@ -1,13 +1,13 @@
 package com.example.demo12.Model.details;
 
-import com.example.demo12.Model.Mark.marks;
+import com.example.demo12.Model.Mark.Marks;
 import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
-@Table(name="student")
-public class student {
+@Table(name="Student")
+public class Student {
     @Id
     private String rn_id;
     private String student_name;
@@ -15,20 +15,33 @@ public class student {
     private String role;
     private String email;
     private String password;
+    @Column(nullable = true)
     private String t_id;
+
+
+    private String profile;
 
     @OneToMany
     @JoinColumn(name="stdent_id",referencedColumnName = "rn_id")
-    private List<marks> Marks;
+    private List<Marks> marks;
 
 
-    public List<marks> getMarks() {
-        return Marks;
+    public String getProfile() {
+        return profile;
     }
 
-    public void setMarks(List<marks> marks) {
-        Marks = marks;
+    public void setProfile(String profile) {
+        this.profile = profile;
     }
+
+    public List<Marks> getMarks() {
+        return marks;
+    }
+
+    public void setMarks(List<Marks> marks) {
+        this.marks = marks;
+    }
+
 
     public String getT_id() {
         return t_id;

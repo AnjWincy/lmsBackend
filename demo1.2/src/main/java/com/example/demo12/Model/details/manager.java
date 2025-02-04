@@ -4,23 +4,24 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 @Entity
-public class manager {
+public class Manager {
+
     @Id
     private String m_id;
-    private String name;
+    private String manager_name;
     private String email;
 
     private String password;
 
 
-
-    public String getName() {
-        return name;
+    public String getManager_name() {
+        return manager_name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setManager_name(String manager_name) {
+        this.manager_name = manager_name;
     }
+
 
 
     public String getPassword() {

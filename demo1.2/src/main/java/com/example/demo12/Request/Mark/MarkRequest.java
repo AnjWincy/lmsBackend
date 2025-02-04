@@ -1,27 +1,26 @@
 package com.example.demo12.Request.Mark;
 
-import com.example.demo12.Model.Mark.marks;
+import com.example.demo12.Model.Mark.Marks;
 
 import java.util.List;
 
 public class MarkRequest {
 
 
-
-    private List<marks> marklist;
-    private Long mark_id;
+    private List<Marks> marklist;
+//    private Long mark_id;
     private String trainerId;
     private String subject;
     private String studentType;
 
-    public Long getMark_id() {
-        return mark_id;
-    }
-
-    public void setMark_id(Long mark_id) {
-        this.mark_id = mark_id;
-    }
-    // Getters and setters
+//    public Long getMark_id() {
+//        return mark_id;
+//    }
+//
+//    public void setMark_id(Long mark_id) {
+//        this.mark_id = mark_id;
+//    }
+//    // Getters and setters
     public String getTrainerId() {
         return trainerId;
     }
@@ -46,11 +45,11 @@ public class MarkRequest {
         this.studentType = studentType;
     }
 
-    public List<marks> getMarklist() {
+    public List<Marks> getMarklist() {
         return marklist;
     }
 
-    public void setMarklist(List<marks> marklist) {
+    public void setMarklist(List<Marks> marklist) {
         this.marklist = marklist;
     }
 

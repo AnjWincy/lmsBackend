@@ -3,8 +3,9 @@ package com.example.demo12.Model.Mark;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="marks")
-public class marks {
+@Table(name="Marks")
+public class Marks {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long mark_id;
@@ -14,6 +15,7 @@ public class marks {
     private String edit_date;
     private String stdent_id;
     private String tran_id;
+
 
     public Long getMark_id() {
         return mark_id;

@@ -9,10 +9,11 @@ import jakarta.persistence.OneToMany;
 import java.util.List;
 
 @Entity
-public class trainer {
+public class Trainer {
+
     @Id
     private String trainer_id;
-    private String name;
+    private String trainer_name;
     private String role;
     private String ph_no;
     private String email;
@@ -20,14 +21,15 @@ public class trainer {
 
     @OneToMany
     @JoinColumn(name="t_id",referencedColumnName = "trainer_id")
-    private List<student> Students;
+    private List<Student> students;
 
-    public List<student> getStudents() {
-        return Students;
+
+    public List<Student> getStudents() {
+        return students;
     }
 
-    public void setStudents(List<student> students) {
-        Students = students;
+    public void setStudents(List<Student> students) {
+        this.students = students;
     }
 
     public String getPh_no() {
@@ -38,9 +40,7 @@ public class trainer {
         this.ph_no = ph_no;
     }
 
-    public String getName() {
-        return name;
-    }
+
 
     public String getRole() {
         return role;
@@ -50,9 +50,7 @@ public class trainer {
         this.role = role;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+
 
     public String getTrainer_id() {
         return trainer_id;
@@ -76,5 +74,13 @@ public class trainer {
 
     public void setTrainer_id(String trainer_id) {
         this.trainer_id = trainer_id;
+    }
+
+    public String getTrainer_name() {
+        return trainer_name;
+    }
+
+    public void setTrainer_name(String trainer_name) {
+        this.trainer_name = trainer_name;
     }
 }
