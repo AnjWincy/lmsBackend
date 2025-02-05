@@ -21,7 +21,7 @@ public class Student {
 
     private String profile;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="stdent_id",referencedColumnName = "rn_id")
     private List<Marks> marks;
 

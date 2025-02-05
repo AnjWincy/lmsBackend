@@ -8,8 +8,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.List;
+
+
+
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.io.File;
+import java.net.MalformedURLException;
+import java.nio.file.Paths;
+import java.nio.file.Path;
+import org.springframework.core.io.UrlResource;
+
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -18,36 +32,29 @@ public class StudentController {
     StudentService studentService;
 
 
+
+
     @GetMapping("/allStudents")
     public ResponseEntity<List<Student>> getAllStudents() {
         List<Student> students = studentService.getAllMarks();
+        // No need to modify the profile URL, it should already be full
         return new ResponseEntity<>(students, HttpStatus.OK);
     }
 
-//    @GetMapping("/allStudents")
-//    public ResponseEntity<List<Student>> getAllStudents() {
-//        List<Student> students = studentService.getAllMarks();
-//
-//        // Modify the profile field to return an accessible URL if necessary
-//        for (Student student : students) {
-//            // Assuming profile is the file path like "C:/Users/.../student_RN21505.jpg"
-//            String profileImagePath = student.getProfile();
-//            if (profileImagePath != null) {
-//                // Extract the filename and generate a URL that the frontend can access
-//                String imageUrl = "http://localhost:8080/images/" + Paths.get(profileImagePath).getFileName().toString();
-//                student.setProfile(imageUrl); // Set the profile URL for the frontend
-//            }
-//        }
-//
-//        return new ResponseEntity<>(students, HttpStatus.OK);
-//    }
+    private static final String IMAGE_DIRECTORY = "C:/Users/z046705/Documents/Dynamic Images/";
 
-//    @GetMapping("/allStudents")
-//    public ResponseEntity<List<Student>> getAllStudents() {
-//        List<Student> students = studentService.getAllMarks();
-//        // No need to modify the profile URL, it should already be full
-//        return new ResponseEntity<>(students, HttpStatus.OK);
-//    }
+    @GetMapping("/images/{filename}")
+    @ResponseBody
+    public ResponseEntity<Resource> getImage(@PathVariable String filename) throws MalformedURLException {
+        File file = new File(IMAGE_DIRECTORY, filename);
+        if (!file.exists()) {
+            return ResponseEntity.notFound().build();  // Return 404 if file doesn't exist
+        }
+
+        // Return the file as a resource
+        Resource resource = new UrlResource(file.toURI());
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(resource);
+    }
 
 
     @PostMapping("/add/student")
@@ -90,13 +97,40 @@ public class StudentController {
 
 
     // Delete student (DELETE /students/{id})
+//    @DeleteMapping("/deleteStudent/{rn_id}")
+//    public ResponseEntity<Void> deleteStudent(@PathVariable String rn_id) {
+//        Student existingStudent = studentService.getStudentById(rn_id);
+//        if (existingStudent == null) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);  // 404 if not found
+//        }
+//        studentService.deleteStudent(rn_id);
+//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);  // 204 for successful delete with no content
+//    }
+
     @DeleteMapping("/deleteStudent/{rn_id}")
     public ResponseEntity<Void> deleteStudent(@PathVariable String rn_id) {
         Student existingStudent = studentService.getStudentById(rn_id);
         if (existingStudent == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);  // 404 if not found
         }
+
+        // Check if the student has a profile image and delete it
+        if (existingStudent.getProfile() != null && !existingStudent.getProfile().isEmpty()) {
+            String imagePath = existingStudent.getProfile().replace("http://localhost:8080/images/", "");
+            File profileImage = new File("C:/Users/z046705/Documents/Dynamic Images/" + imagePath);
+            if (profileImage.exists()) {
+                boolean deleted = profileImage.delete();
+                if (!deleted) {
+                    // Log the failure or handle it as needed
+                    System.out.println("Failed to delete the image: " + profileImage.getPath());
+                }
+            }
+        }
+
+        // Delete the student from the database
         studentService.deleteStudent(rn_id);
+
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);  // 204 for successful delete with no content
     }
+
 }
