@@ -3,7 +3,9 @@ package com.example.demo12.Service.Details;
 import com.example.demo12.Model.details.Student;
 import com.example.demo12.Repository.DetailsRepository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -24,15 +26,11 @@ public class StudentService {
         return studentRepository.getStudentByRnId(rn_id);
     }
 
+
+//    @Cacheable(value="student", key = "'all_students'")
     public List<Student> getAllMarks() {
         return studentRepository.findAll();
     }
-// All student
-
-//    public Student saveStudent(Student student) {
-//        return studentRepository.save(student);
-//    }
-
 
     public Student saveStudent(Student student) throws IOException {
         if (student.getProfile() != null) {
@@ -67,16 +65,13 @@ public class StudentService {
         return studentRepository.save(student);  // Save the student to the DB
     }
 
-
-    // Save or Update student
-    public Student saveOrUpdateStudent(Student student) throws IOException{
-        // Save or update student based on the existence of the ID
-//        return studentRepository.save(student); // save() handles both create and update scenarios
-        if (student.getProfile() != null) {
+//    @CachePut(value="student", key = "'all_students'")
+    public Student saveOrUpdateStudent(Student student) throws IOException {
+        if (student.getProfile() != null && !student.getProfile().startsWith("http://localhost:8080/images/student_" + student.getRn_id())) {
+          System.out.println("geafgb");
             String base64Data = student.getProfile();
-            String fileExtension = "jpg";  // Default to jpg
+            String fileExtension = "jpg"; // Default to jpg
 
-            // Check if the profile contains the base64 string and the image format prefix
             if (base64Data.startsWith("data:image/jpeg;base64,")) {
                 base64Data = base64Data.substring("data:image/jpeg;base64,".length());
                 fileExtension = "jpg";  // JPEG
@@ -101,15 +96,21 @@ public class StudentService {
             student.setProfile("http://localhost:8080/images/" + fileName);
         }
 
+        // Save or update the student in the database
         return studentRepository.save(student);
     }
 
 
-    // Delete student by ID
+
+
     public void deleteStudent(String rn_id) {
 
         studentRepository.deleteById(rn_id);
     }
 
+
+    public long getTotalStudentCount() {
+        return studentRepository.count();
+    }
 
 }

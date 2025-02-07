@@ -57,18 +57,13 @@ public class MarkService {
                     .filter(studentMark -> studentMark.getMark() == null || studentMark.getMark() < 75)
                     .collect(Collectors.toList());  // Return only failed Marks or absent students
         } else {
-            // For non-"ReAttempt" students, return the latest mark only for students with Marks >= 75
-//            return latestMarksMap.values().stream()
-//                    .filter(studentMark -> studentMark.getMark() != null && studentMark.getMark() >= 75)
-//                    .collect(Collectors.toList());  // Return only students who passed (Marks >= 75)
+
             return new ArrayList<>(latestMarksMap.values());
         }
     }
 
 
-
-    //Old getMarks
-public MarkResponse publishMarks(MarkRequest markRequest) {
+    public MarkResponse publishMarks(MarkRequest markRequest) {
     List<Marks> studentsMarks = markRequest.getMarklist();
 
     // Set the current date for all Marks
@@ -109,47 +104,6 @@ public MarkResponse publishMarks(MarkRequest markRequest) {
                 ));
     }
 
-//Old getMarks
-
-
-//    public List<Marks> getMarks(MarkRequest markRequest) {
-//        String trainerId = markRequest.getTrainerId();
-//        String subject = markRequest.getSubject();
-//        String studentType = markRequest.getStudentType();
-//
-//        // Fetch all Marks for the given subject and Trainer
-//        List<Marks> marksList = marksRepository.findMarksBySubjectAndTrainer(subject, trainerId);
-//
-//        // Map to store the latest mark for each Student based on edit_date
-//        Map<String, Marks> latestMarksMap = new HashMap<>();
-//
-//        // Loop through the Marks to get the latest mark for each Student
-//        for (Marks studentMark : marksList) {
-//            String studentId = studentMark.getStdent_id();
-//            String editDate = studentMark.getEdit_date();
-//
-//            // If no mark exists for the Student or if this edit_date is later, update the map
-//            if (!latestMarksMap.containsKey(studentId) || isLaterDate(editDate, latestMarksMap.get(studentId).getEdit_date())) {
-//                latestMarksMap.put(studentId, studentMark);
-//            }
-//        }
-//
-//        // After grouping by the latest edit_date, filter based on studentType
-//        if ("ReAttempt".equals(studentType)) {
-//            // Filter out students who have passed (Marks >= 75)
-//            List<Marks> filteredMarksList = new ArrayList<>();
-//            for (Marks studentMark : latestMarksMap.values()) {
-//                if (studentMark.getMark() < 75) {
-//                    filteredMarksList.add(studentMark);
-//                }
-//            }
-//            // Return only failed Marks for ReAttempt students
-//            return filteredMarksList;
-//        } else {
-//            // For non-"ReAttempt" students, return the latest mark (whether failed or passed)
-//            return new ArrayList<>(latestMarksMap.values());
-//        }
-//    }
 
 
 }

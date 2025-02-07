@@ -63,4 +63,11 @@ public class TrainerController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+
+    @GetMapping("/trainerCount")
+    public ResponseEntity<Long> getStudentCount() {
+        long count = trainerService.countTrainers(); // Assuming you have this method in your service.
+        return new ResponseEntity<>(count, HttpStatus.OK);
+    }
 }

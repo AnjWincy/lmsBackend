@@ -2,7 +2,10 @@ package com.example.demo12.Controller.Details;
 
 import com.example.demo12.Model.details.Student;
 import com.example.demo12.Service.Details.StudentService;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +23,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.File;
 import java.net.MalformedURLException;
-import java.nio.file.Paths;
-import java.nio.file.Path;
 import org.springframework.core.io.UrlResource;
 
 
@@ -43,6 +44,7 @@ public class StudentController {
 
     private static final String IMAGE_DIRECTORY = "C:/Users/z046705/Documents/Dynamic Images/";
 
+
     @GetMapping("/images/{filename}")
     @ResponseBody
     public ResponseEntity<Resource> getImage(@PathVariable String filename) throws MalformedURLException {
@@ -56,6 +58,11 @@ public class StudentController {
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(resource);
     }
 
+    @GetMapping("/studentCount")
+    public ResponseEntity<Long> getStudentCount() {
+        long count = studentService.getTotalStudentCount(); // Assuming you have this method in your service.
+        return new ResponseEntity<>(count, HttpStatus.OK);
+    }
 
     @PostMapping("/add/student")
     public ResponseEntity<Student> saveStudent(@RequestBody Student student) throws IOException {
@@ -63,9 +70,6 @@ public class StudentController {
         return new ResponseEntity<>(savedStudent, HttpStatus.CREATED);  // 201 for created resource
     }
 
-
-
-    // Get student by ID (GET /students/{id})
     @GetMapping("/student/{rn_id}")
     public ResponseEntity<Student> getStudentById(@PathVariable String rn_id) {
         Student student = studentService.getStudentById(rn_id);
@@ -76,10 +80,7 @@ public class StudentController {
     }
 
 
-    // Save new student (POST /students)
 
-
-    // Update student (PUT /students/{id})
     @PutMapping("/updateStudent/{rn_id}")
     public ResponseEntity<Student> updateStudent(@PathVariable String rn_id, @RequestBody Student student)throws IOException {
         Student existingStudent = studentService.getStudentById(rn_id);  // Get the student by ID
@@ -96,16 +97,6 @@ public class StudentController {
     }
 
 
-    // Delete student (DELETE /students/{id})
-//    @DeleteMapping("/deleteStudent/{rn_id}")
-//    public ResponseEntity<Void> deleteStudent(@PathVariable String rn_id) {
-//        Student existingStudent = studentService.getStudentById(rn_id);
-//        if (existingStudent == null) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);  // 404 if not found
-//        }
-//        studentService.deleteStudent(rn_id);
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);  // 204 for successful delete with no content
-//    }
 
     @DeleteMapping("/deleteStudent/{rn_id}")
     public ResponseEntity<Void> deleteStudent(@PathVariable String rn_id) {

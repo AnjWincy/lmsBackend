@@ -40,4 +40,8 @@ public class TrainerService {
     public void deleteTrainer(String trainer_id) {
         trainerRepository.deleteById(trainer_id);
     }
+
+    public Long countTrainers(){
+        return trainerRepository.count();
+    }
 }
