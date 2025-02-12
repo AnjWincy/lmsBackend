@@ -68,43 +68,31 @@ public class MarkServiceTest {
 
     @Test
     public void testGetMarks_ReAttempt() {
-        // Mock repository behavior
         when(marksRepository.findMarksBySubjectAndTrainer("Math", "T1"))
                 .thenReturn(Arrays.asList(mark1, mark2, mark3));
 
-        // Call the method
         List<Marks> result = markService.getMarks(markRequest);
 
-        // Assert the result
-        assertEquals(1, result.size());  // Only the student who failed should be returned
-        assertTrue(result.stream().anyMatch(m -> m.getStdent_id().equals("S1")));  // "S1" has failed
+        assertEquals(1, result.size());
+        assertTrue(result.stream().anyMatch(m -> m.getStdent_id().equals("S1")));
     }
 
     @Test
     public void testPublishMarks() {
-        // Mock behavior of saveAll
-        when(marksRepository.saveAll(anyList())).thenAnswer(invocation -> invocation.getArgument(0));  // Return the same list passed to saveAll
-
-        // Call the method
+        when(marksRepository.saveAll(anyList())).thenAnswer(invocation -> invocation.getArgument(0));
         MarkResponse response = markService.publishMarks(markRequest);
-
-        // Verify that marksRepository.saveAll was called once
         verify(marksRepository, times(1)).saveAll(anyList());
 
-        // Assert the response
         assertNotNull(response);
         assertEquals("Marks published successfully", response.getMsg());
     }
 
     @Test
     public void testGetSubjectStats() {
-        // Mock repository behavior
         when(marksRepository.findAll()).thenReturn(Arrays.asList(mark1, mark2, mark3));
 
-        // Call the method
         Map<String, Map<String, Long>> result = markService.getSubjectStats();
 
-        // Assert the result
         assertNotNull(result);
         assertTrue(result.containsKey("Math"));
         assertTrue(result.get("Math").containsKey("Pass"));
@@ -118,27 +106,18 @@ public class MarkServiceTest {
     public void testGetMarks_AllStudents() {
         markRequest.setStudentType("All");
 
-        // Mock repository behavior
         when(marksRepository.findMarksBySubjectAndTrainer("Math", "T1"))
-                .thenReturn(Arrays.asList(mark1, mark2, mark3));  // Ensure all 3 students are in the mock
+                .thenReturn(Arrays.asList(mark1, mark2, mark3));
 
-
-        // Call the method
         List<Marks> result = markService.getMarks(markRequest);
 
-        // Assert the result
-        assertEquals(2, result.size());  // All 3 students should be returned
+        assertEquals(2, result.size());
     }
 
     @Test
     public void testGetMarks_EmptyList() {
-        // Mock repository behavior for no marks
         when(marksRepository.findMarksBySubjectAndTrainer("Math", "T1")).thenReturn(Collections.emptyList());
-
-        // Call the method
         List<Marks> result = markService.getMarks(markRequest);
-
-        // Assert the result is empty
         assertTrue(result.isEmpty());
     }
 
@@ -148,24 +127,18 @@ public class MarkServiceTest {
     @Test
     public void testPublishMarks_NewMark() {
         Marks newMark = new Marks();
-        newMark.setMark(null);  // New mark without an existing ID
+        newMark.setMark(null);
         newMark.setSubject("Math");
         newMark.setStdent_id("S3");
         newMark.setTran_id("T1");
         newMark.setEdit_date("2025-02-12 10:00:00");
 
         markRequest.setMarklist(Arrays.asList(newMark));
+        when(marksRepository.saveAll(anyList())).thenAnswer(invocation -> invocation.getArgument(0));
 
-        // Mock behavior of saveAll
-        when(marksRepository.saveAll(anyList())).thenAnswer(invocation -> invocation.getArgument(0));  // Return the same list passed to saveAll
-
-        // Call the method
         MarkResponse response = markService.publishMarks(markRequest);
-
-        // Verify that marksRepository.saveAll was called once
         verify(marksRepository, times(1)).saveAll(anyList());
 
-        // Assert the response
         assertNotNull(response);
         assertEquals("Marks published successfully", response.getMsg());
     }

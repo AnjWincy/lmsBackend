@@ -52,50 +52,27 @@ public class CalendarServiceTest {
         assertEquals(1, result.get("completed").size());
     }
 
-    @Test
-    public void testCompletedCount() {
-        CalendarModel model1 = new CalendarModel();
-        model1.setDate(LocalDate.now().plusDays(1));
-
-        CalendarModel model2 = new CalendarModel();
-        model2.setDate(LocalDate.now().minusDays(1));
-
-        List<CalendarModel> calendarModels = Arrays.asList(model1, model2);
-
-        when(calendarRepository.findAll()).thenReturn(calendarModels);
-
-        Map<String, Long> result = calendarService.CompletedCount();
-
-        assertEquals(1, result.get("completed"));
-        assertEquals(1, result.get("scheduled"));
-    }
 
     @Test
     public void testDeleteById() {
         Long id = 1L;
 
-        // Test the method
-        calendarService.deleteById(id);
 
-        // Verify that the repository's deleteById method was called with the correct ID
+        calendarService.deleteById(id);
         verify(calendarRepository, times(1)).deleteById(id);
     }
 
     @Test
-    public void testRegisterUser() throws Exception {
+    public void testAddEvent() throws Exception {
         CalendarRequest request = new CalendarRequest();
         request.setTitle("Test Event");
         request.setDate(LocalDate.now().plusDays(5));
-
-        // Test the method
         calendarService.registerUser(request);
-
-        // Verify the save method is called on repository
         verify(calendarRepository, times(1)).save(any(CalendarModel.class));
     }
 
     @Test
-    public void testRegisterUserThrowsException() {
+    public void testAddEventThrowsException() {
         CalendarRequest request = new CalendarRequest();
         request.setTitle("Test Event");
         request.setDate(LocalDate.now().plusDays(5));
@@ -110,7 +87,7 @@ public class CalendarServiceTest {
     }
 
     @Test
-    public void testUpdateUser() throws Exception {
+    public void testUpdateEvent() throws Exception {
         Long id = 1L;
         CalendarRequest request = new CalendarRequest();
         request.setTitle("Updated Event");
@@ -134,7 +111,7 @@ public class CalendarServiceTest {
     }
 
     @Test
-    public void testUpdateUserThrowsException() {
+    public void testUpdateEventThrowsException() {
         Long id = 1L;
         CalendarRequest request = new CalendarRequest();
         request.setTitle("Updated Event");

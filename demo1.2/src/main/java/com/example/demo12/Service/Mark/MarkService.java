@@ -35,23 +35,18 @@ public class MarkService {
         String subject = markRequest.getSubject();
         String studentType = markRequest.getStudentType();
 
-        // Fetch all Marks for the given subject and Trainer, including absent students
         List<Marks> marksList = marksRepository.findMarksBySubjectAndTrainer(subject, trainerId);
 
-        // Map to store the latest mark for each Student based on edit_date
         Map<String, Marks> latestMarksMap = new HashMap<>();
 
-        // Loop through the Marks to get the latest mark for each Student
         for (Marks studentMark : marksList) {
             String studentId = studentMark.getStdent_id();
             String editDate = studentMark.getEdit_date();
 
-            // If no mark exists for the Student or if this edit_date is later, update the map
             latestMarksMap.merge(studentId, studentMark, (existingMark, newMark) ->
                     isLaterDate(newMark.getEdit_date(), existingMark.getEdit_date()) ? newMark : existingMark);
         }
 
-        // Filter based on studentType and return the filtered list
         if ("ReAttempt".equals(studentType)) {
             return latestMarksMap.values().stream()
                     .filter(studentMark -> studentMark.getMark() == null || studentMark.getMark() < 75)
@@ -68,21 +63,17 @@ public class MarkService {
     public MarkResponse publishMarks(MarkRequest markRequest) {
     List<Marks> studentsMarks = markRequest.getMarklist();
 
-    // Set the current date for all Marks
-//    String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+
     String currentDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
     for (Marks studentMark : studentsMarks) {
-        studentMark.setEdit_date(currentDate);  // Set the edit date
-        studentMark.setTran_id(studentMark.getTran_id()); // Ensure Trainer ID is set
-        studentMark.setSubject(studentMark.getSubject()); // Ensure subject is set
-        // If the id is null, Hibernate will treat it as a new record
+        studentMark.setEdit_date(currentDate);
+        studentMark.setTran_id(studentMark.getTran_id());
+        studentMark.setSubject(studentMark.getSubject());
         if (studentMark.getMark_id() == null) {
-            // Log it if you want to verify that this is a new entry
             System.out.println("Saving new mark for Student: " + studentMark.getTran_id());
         }
     }
 
-    // Save all Marks (if id is null, Hibernate will treat them as new records)
     marksRepository.saveAll(studentsMarks);
 
     MarkResponse markResponse = new MarkResponse();
@@ -92,15 +83,14 @@ public class MarkService {
 
 
     public Map<String, Map<String, Long>> getSubjectStats() {
-        List<Marks> marks = marksRepository.findAll();  // Fetch all marks data from DB
+        List<Marks> marks = marksRepository.findAll();
 
-        // Group marks by subject and calculate pass/fail counts, ignoring null marks
         return marks.stream()
-                .filter(mark -> mark.getMark() != null)  // Filter out marks that are null
+                .filter(mark -> mark.getMark() != null)
                 .collect(Collectors.groupingBy(
                         Marks::getSubject,
                         Collectors.groupingBy(
-                                mark -> mark.getMark() >= 75 ? "Pass" : "Fail",  // Group by Pass/Fail
+                                mark -> mark.getMark() >= 75 ? "Pass" : "Fail",
                                 Collectors.counting()
                         )
                 ));

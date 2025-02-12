@@ -32,20 +32,14 @@ public class FeedbackServiceTest {
 
     @Test
     public void testPostFeedback() {
-        // Given
         FeedbackModel feedback = new FeedbackModel();
         feedback.setId(1);
-
-        // When
         feedbackService.post(feedback);
-
-        // Then
         verify(feedbackrepo, times(1)).save(feedback);
     }
 
     @Test
     public void testGetAllFeedback() {
-        // Given
         FeedbackModel feedback1 = new FeedbackModel();
         feedback1.setId(1);
 
@@ -55,25 +49,18 @@ public class FeedbackServiceTest {
         List<FeedbackModel> feedbackList = Arrays.asList(feedback1, feedback2);
 
         when(feedbackrepo.findAll()).thenReturn(feedbackList);
-
-        // When
         List<FeedbackModel> result = feedbackService.getAllFeedback();
-
-        // Then
         assertEquals(2, result.size());
     }
 
     @Test
     public void testGetAllFeedbackEmpty() {
-        // Given
         List<FeedbackModel> feedbackList = Arrays.asList();
 
         when(feedbackrepo.findAll()).thenReturn(feedbackList);
 
-        // When
         List<FeedbackModel> result = feedbackService.getAllFeedback();
 
-        // Then
         assertTrue(result.isEmpty());
     }
 }

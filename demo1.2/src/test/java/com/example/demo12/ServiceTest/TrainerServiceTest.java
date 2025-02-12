@@ -27,7 +27,7 @@ public class TrainerServiceTest {
 
     @BeforeEach
     public void setup() {
-        // Initialize trainer object for testing
+
         trainer = new Trainer();
         trainer.setTrainer_id("T123");
         trainer.setTrainer_name("John Trainer");
@@ -38,7 +38,6 @@ public class TrainerServiceTest {
 
     @Test
     public void testSaveOrUpdateTrainer_NewTrainer() {
-        // Mock the behavior of the trainerRepository
         when(trainerRepository.save(any(Trainer.class))).thenReturn(trainer);
 
         Trainer savedTrainer = trainerService.saveOrUpdateTrainer(trainer);
@@ -47,13 +46,11 @@ public class TrainerServiceTest {
         assertEquals("T123", savedTrainer.getTrainer_id());
         assertEquals("John Trainer", savedTrainer.getTrainer_name());
 
-        // Verify that save was called once
         verify(trainerRepository, times(1)).save(any(Trainer.class));
     }
 
     @Test
     public void testSaveOrUpdateTrainer_ExistingTrainer() {
-        // Mock the behavior for existing trainer
         when(trainerRepository.existsById("T123")).thenReturn(true);
         when(trainerRepository.save(any(Trainer.class))).thenReturn(trainer);
 
@@ -69,7 +66,6 @@ public class TrainerServiceTest {
 
     @Test
     public void testGetAllTrainers() {
-        // Mock behavior to return a list of trainers
         when(trainerRepository.findAll()).thenReturn(Arrays.asList(trainer));
 
         var trainers = trainerService.getAllTrainers();
@@ -77,14 +73,11 @@ public class TrainerServiceTest {
         assertNotNull(trainers);
         assertEquals(1, trainers.size());
         assertEquals("John Trainer", trainers.get(0).getTrainer_name());
-
-        // Verify that findAll was called once
         verify(trainerRepository, times(1)).findAll();
     }
 
     @Test
     public void testGetTrainerById_Found() {
-        // Mock behavior to return a trainer by ID
         when(trainerRepository.findById("T123")).thenReturn(Optional.of(trainer));
 
         Optional<Trainer> fetchedTrainer = trainerService.getTrainerById("T123");
@@ -93,31 +86,24 @@ public class TrainerServiceTest {
         assertEquals("T123", fetchedTrainer.get().getTrainer_id());
         assertEquals("John Trainer", fetchedTrainer.get().getTrainer_name());
 
-        // Verify that findById was called once
         verify(trainerRepository, times(1)).findById("T123");
     }
 
     @Test
     public void testGetTrainerById_NotFound() {
-        // Mock behavior for a trainer not found by ID
         when(trainerRepository.findById("T999")).thenReturn(Optional.empty());
 
         Optional<Trainer> fetchedTrainer = trainerService.getTrainerById("T999");
 
         assertFalse(fetchedTrainer.isPresent());
-
-        // Verify that findById was called once
         verify(trainerRepository, times(1)).findById("T999");
     }
 
     @Test
     public void testDeleteTrainer() {
-        // Mock the behavior to delete the trainer by ID
         doNothing().when(trainerRepository).deleteById("T123");
 
         trainerService.deleteTrainer("T123");
-
-        // Verify that deleteById was called once
         verify(trainerRepository, times(1)).deleteById("T123");
     }
 
@@ -130,8 +116,6 @@ public class TrainerServiceTest {
 
         assertNotNull(count);
         assertEquals(5L, count);
-
-        // Verify that count was called once
         verify(trainerRepository, times(1)).count();
     }
 

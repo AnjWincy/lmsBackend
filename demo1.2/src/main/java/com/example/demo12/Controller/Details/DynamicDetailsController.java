@@ -24,6 +24,12 @@ public class DynamicDetailsController {
 
     @PostMapping("/validate_student")
     public ResponseEntity<?> validateU(@RequestBody LoginRequest loginRequest) throws Exception {
+        if (loginRequest.getEmail() == null || !loginRequest.getEmail().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            throw new IllegalArgumentException("Invalid email format");
+        }
+        if (loginRequest.getPassword() == null || loginRequest.getPassword().isEmpty()) {
+            throw new IllegalArgumentException("Password is required");
+        }
         try {
             DetailsResponse detailsResponse = dynamicDetailsService.getStudentDetails(loginRequest);
             return ResponseEntity.ok(detailsResponse);
@@ -36,6 +42,12 @@ public class DynamicDetailsController {
 
     @PostMapping("/validate_manager")
     public ResponseEntity<?> validateM(@RequestBody LoginRequest loginRequest) throws Exception {
+        if (loginRequest.getEmail() == null || !loginRequest.getEmail().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            throw new IllegalArgumentException("Invalid email format");
+        }
+        if (loginRequest.getPassword() == null || loginRequest.getPassword().isEmpty()) {
+            throw new IllegalArgumentException("Password is required");
+        }
         try {
             DetailsResponse detailsResponse = dynamicDetailsService.getManagerDetails(loginRequest);
             return ResponseEntity.ok(detailsResponse);
@@ -46,6 +58,12 @@ public class DynamicDetailsController {
     }
     @PostMapping("/validate_trainer")
     public ResponseEntity<?> validateT(@RequestBody LoginRequest loginRequest) throws Exception {
+        if (loginRequest.getEmail() == null || !loginRequest.getEmail().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            throw new IllegalArgumentException("Invalid email format");
+        }
+        if (loginRequest.getPassword() == null || loginRequest.getPassword().isEmpty()) {
+            throw new IllegalArgumentException("Password is required");
+        }
         try {
             DetailsResponse detailsResponse = dynamicDetailsService.getTrainerDetails(loginRequest);
             return ResponseEntity.ok(detailsResponse);
@@ -59,16 +77,9 @@ public class DynamicDetailsController {
 
     @GetMapping("/getid")
     public ResponseEntity<LoginResponse> getId() {
-        // Create a response object
         LoginResponse response = new LoginResponse();
-
-        // Retrieve a list of Student IDs from the service
-        List<String> ids = dynamicDetailsService.getStuId();  // Assuming Student IDs are of type Long
-
-        // Set the IDs into the response object
+        List<String> ids = dynamicDetailsService.getStuId();
         response.setIds(ids);
-
-        // Return the response entity with the list of IDs
         return ResponseEntity.ok(response);
     }
 
@@ -76,13 +87,9 @@ public class DynamicDetailsController {
     @GetMapping("/Trainer/{trainerId}")
     public LoginResponse getTopicsByCourseId(@PathVariable String trainerId) {
         List<String> stu = dynamicDetailsService.getStudentByTrainerId(trainerId);
-
-        // Create a response object
         LoginResponse response = new LoginResponse();
         response.setMsg("Student retrieved successfully by Trainer ID: " + trainerId);
-
-        // You can also add the list of Topics or any other details as needed in the response
-        response.setIds(stu);  // Assuming you added a `Topics` field in `LoginResponse`
+        response.setIds(stu);
 
         return response;    }
 
@@ -90,8 +97,6 @@ public class DynamicDetailsController {
     @GetMapping("/students/{studentId}")
     public LoginResponse getMarkByStudentId(@PathVariable String studentId) {
         List<Marks> mark = dynamicDetailsService.getMarksByStudentId(studentId);
-
-        // Create a response object
         LoginResponse response = new LoginResponse();
         response.setMsg("Marks retrieved successfully for Student ID: " + studentId);
 
@@ -103,8 +108,6 @@ public class DynamicDetailsController {
     @GetMapping("/students_mark")
     public DetailsResponse getAllMark() {
         List<Student> stu = dynamicDetailsService.getAllMarks();
-
-        // Create a response object
         DetailsResponse response = new DetailsResponse();
         response.setStudents(stu);
 

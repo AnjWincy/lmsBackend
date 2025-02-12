@@ -6,8 +6,7 @@ import com.example.demo12.Model.details.Trainer;
 import com.example.demo12.Repository.DetailsRepository.ManagerRepository;
 import com.example.demo12.Repository.DetailsRepository.StudentRepository;
 import com.example.demo12.Repository.DetailsRepository.TrainerRepository;
-import com.example.demo12.Request.Details.LoginRequest;
-import com.example.demo12.Response.Details.LoginResponse;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -34,11 +33,11 @@ public class LoginService {
     private final Random random = new Random();
 
     public String generateVerificationCode() {
-        int code = 100000 + random.nextInt(900000); // Generates a 6-digit code
+        int code = 100000 + random.nextInt(900000);
         return String.valueOf(code);
     }
 
-    // Send verification code via email
+
     public void sendVerificationCode(String email, String verificationCode) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
@@ -61,17 +60,17 @@ public class LoginService {
     }
 
     public void updateStudentPassword(Student Student, String newPassword) {
-        Student.setPassword(newPassword); // You should hash the password here before saving it.
+        Student.setPassword(newPassword);
         studentRepository.save(Student);
     }
 
     public void updateManagerPassword(Manager Manager, String newPassword) {
-        Manager.setPassword(newPassword); // You should hash the password here before saving it.
+        Manager.setPassword(newPassword);
         managerRepository.save(Manager);
     }
 
     public void updateTrainerPassword(Trainer Trainer, String newPassword) {
-        Trainer.setPassword(newPassword); // You should hash the password here before saving it.
+        Trainer.setPassword(newPassword);
         trainerRepository.save(Trainer);
     }
 

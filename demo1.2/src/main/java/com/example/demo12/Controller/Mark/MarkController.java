@@ -20,7 +20,6 @@ public class MarkController {
 
     @PostMapping("/Marks")
     public List<Marks> getMarks(@RequestBody MarkRequest markRequest) {
-        // Pass the MarkRequest to the service to fetch filtered Marks
         return markService.getMarks(markRequest);
     }
 
@@ -38,7 +37,7 @@ public class MarkController {
         try {
             Map<String, Map<String, Long>> subjectStats = markService.getSubjectStats();
             if (subjectStats == null || subjectStats.isEmpty()) {
-                // Return a 204 No Content if no statistics are available
+                // Return a 204 No Contnt if no statistics are available
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>(subjectStats, HttpStatus.OK);

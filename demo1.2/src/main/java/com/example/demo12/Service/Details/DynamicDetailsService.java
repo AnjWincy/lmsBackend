@@ -39,64 +39,50 @@ public class DynamicDetailsService {
         if (user == null) {
             throw new Exception("Invalid email or password");
         }
-
-        // Assuming you have a method to fetch the Student's details, such as `getStudentDetails`.
         Optional<Student> optionalStudent = studentRepository.findById(user.getRn_id());
-
         if (!optionalStudent.isPresent()) {
-            throw new Exception("Student not found");  // Handle case where Student is not found
+            throw new Exception("Student not found");
         }
-
-        Student studentDetails = optionalStudent.get();  // Retrieve the Student from Optional
-
-        // Prepare the response with the Student details
+        Student studentDetails = optionalStudent.get();
         DetailsResponse response = new DetailsResponse();
-        response.setStudents(List.of(studentDetails));  // Wrap the single Student in a list
+        response.setStudents(List.of(studentDetails));
         return response;
     }
 
 
     public DetailsResponse getManagerDetails(LoginRequest loginRequest) throws Exception {
-        // Validate the Manager by email and password
         Manager user = managerRepository.validateManager(loginRequest.getEmail(), loginRequest.getPassword());
         if (user == null) {
             throw new Exception("Invalid email or password");
         }
-
-        // Fetch the Manager details by Manager ID
         Optional<Manager> optionalManager = managerRepository.findById(user.getM_id());
 
         if (!optionalManager.isPresent()) {
-            throw new Exception("Manager not found");  // Handle case where Manager is not found
+            throw new Exception("Manager not found");
         }
 
-        Manager managerDetails = optionalManager.get();  // Retrieve the Manager from Optional
-
-        // Prepare the response with the Manager details
+        Manager managerDetails = optionalManager.get();
         DetailsResponse response = new DetailsResponse();
-        response.setManagers(List.of(managerDetails));  // Wrap the single Manager in a list
+        response.setManagers(List.of(managerDetails));
         return response;
     }
 
     public DetailsResponse getTrainerDetails(LoginRequest loginRequest) throws Exception {
-        // Validate the Manager by email and password
         Trainer user = trainerRepository.validateTrainer(loginRequest.getEmail(), loginRequest.getPassword());
         if (user == null) {
             throw new Exception("Invalid email or password");
         }
 
-        // Fetch the Manager details by Manager ID
         Optional<Trainer> optionalTrainer = trainerRepository.findById(user.getTrainer_id());
 
         if (!optionalTrainer.isPresent()) {
-            throw new Exception("Manager not found");  // Handle case where Manager is not found
+            throw new Exception("Manager not found");
         }
 
-        Trainer trainerDetails = optionalTrainer.get();  // Retrieve the Manager from Optional
+        Trainer trainerDetails = optionalTrainer.get();
 
-        // Prepare the response with the Manager details
         DetailsResponse response = new DetailsResponse();
-        response.setTrainers(List.of(trainerDetails));  // Wrap the single Manager in a list
+        response.setTrainers(List.of(trainerDetails));
         return response;
     }
 
@@ -105,7 +91,7 @@ public class DynamicDetailsService {
     public List<String> getStuId() {
         return studentRepository.getStudentIds();
     }
-//    Student id
+
 
 
     public List<String> getStudentByTrainerId(String trainerId) {
@@ -119,6 +105,6 @@ public class DynamicDetailsService {
     public List<Student> getAllMarks() {
         return studentRepository.findAll();
     }
-// All student
+
 
 }
