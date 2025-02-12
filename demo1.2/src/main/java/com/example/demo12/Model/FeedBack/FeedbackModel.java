@@ -16,6 +16,16 @@ public class FeedbackModel {
     private String comments;
     private String email;
 
+    private String profile;
+
+    public String getProfile() {
+        return profile;
+    }
+
+    public void setProfile(String profile) {
+        this.profile = profile;
+    }
+
     @CreationTimestamp
     @Column(name = "feedback_date", nullable = false, updatable = false)
     private Date feedback_date;

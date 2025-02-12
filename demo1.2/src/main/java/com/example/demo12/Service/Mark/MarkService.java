@@ -56,6 +56,8 @@ public class MarkService {
             return latestMarksMap.values().stream()
                     .filter(studentMark -> studentMark.getMark() == null || studentMark.getMark() < 75)
                     .collect(Collectors.toList());  // Return only failed Marks or absent students
+        }else if ("All".equals(studentType)) {
+            return new ArrayList<>(latestMarksMap.values());  // Return all students
         } else {
 
             return new ArrayList<>(latestMarksMap.values());

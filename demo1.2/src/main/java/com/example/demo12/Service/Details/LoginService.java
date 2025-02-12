@@ -48,29 +48,6 @@ public class LoginService {
     }
 
 
-
-
-    public LoginResponse validateManager(LoginRequest loginRequest) throws Exception {
-        Manager user = managerRepository.validateManager(loginRequest.getEmail(), loginRequest.getPassword());
-        if (user == null) {
-            throw new Exception("Invalid email or password");
-        }
-
-        LoginResponse response = new LoginResponse();
-        response.setMsg("Login successful");
-        return response;
-    }
-
-    public LoginResponse validateTrainer(LoginRequest loginRequest) throws Exception {
-        Trainer user = trainerRepository.validateTrainer(loginRequest.getEmail(), loginRequest.getPassword());
-        if (user == null) {
-            throw new Exception("Invalid email or password");
-        }
-        LoginResponse response = new LoginResponse();
-        response.setMsg("Login successful");
-        return response;
-    }
-
     public Student findByEmailStudent(String email) {
         return studentRepository.findByEmail(email);
     }

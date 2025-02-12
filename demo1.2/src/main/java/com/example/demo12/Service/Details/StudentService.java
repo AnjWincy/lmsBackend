@@ -3,9 +3,6 @@ package com.example.demo12.Service.Details;
 import com.example.demo12.Model.details.Student;
 import com.example.demo12.Repository.DetailsRepository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -19,20 +16,28 @@ public class StudentService {
     @Autowired
     StudentRepository studentRepository;
 
-
     private final String FILE_PATH = "C:\\Users\\z046705\\Documents\\Dynamic Images";
+
+
+    public List<Student> getAllMarks() {
+        return studentRepository.findAll();
+    }
+
+
+    public  void deleteStudent(String rn_id) {
+        studentRepository.deleteById(rn_id);
+    }
+
 
     public Student getStudentById(String rn_id) {
         return studentRepository.getStudentByRnId(rn_id);
     }
 
-
-//    @Cacheable(value="student", key = "'all_students'")
-    public List<Student> getAllMarks() {
-        return studentRepository.findAll();
-    }
-
     public Student saveStudent(Student student) throws IOException {
+        if (student.getRn_id() == null) {
+            throw new IllegalArgumentException("rn_id cannot be null");
+        }
+
         if (student.getProfile() != null) {
             String base64Data = student.getProfile();
             String fileExtension = "jpg";  // Default to jpg
@@ -65,8 +70,9 @@ public class StudentService {
         return studentRepository.save(student);  // Save the student to the DB
     }
 
-//    @CachePut(value="student", key = "'all_students'")
+
     public Student saveOrUpdateStudent(Student student) throws IOException {
+
         if (student.getProfile() != null && !student.getProfile().startsWith("http://localhost:8080/images/student_" + student.getRn_id())) {
           System.out.println("geafgb");
             String base64Data = student.getProfile();
@@ -98,14 +104,6 @@ public class StudentService {
 
         // Save or update the student in the database
         return studentRepository.save(student);
-    }
-
-
-
-
-    public void deleteStudent(String rn_id) {
-
-        studentRepository.deleteById(rn_id);
     }
 
 

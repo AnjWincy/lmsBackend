@@ -33,12 +33,9 @@ public class StudentController {
     StudentService studentService;
 
 
-
-
     @GetMapping("/allStudents")
     public ResponseEntity<List<Student>> getAllStudents() {
         List<Student> students = studentService.getAllMarks();
-        // No need to modify the profile URL, it should already be full
         return new ResponseEntity<>(students, HttpStatus.OK);
     }
 
@@ -50,7 +47,7 @@ public class StudentController {
     public ResponseEntity<Resource> getImage(@PathVariable String filename) throws MalformedURLException {
         File file = new File(IMAGE_DIRECTORY, filename);
         if (!file.exists()) {
-            return ResponseEntity.notFound().build();  // Return 404 if file doesn't exist
+            return ResponseEntity.notFound().build();
         }
 
         // Return the file as a resource
@@ -80,7 +77,6 @@ public class StudentController {
     }
 
 
-
     @PutMapping("/updateStudent/{rn_id}")
     public ResponseEntity<Student> updateStudent(@PathVariable String rn_id, @RequestBody Student student)throws IOException {
         Student existingStudent = studentService.getStudentById(rn_id);  // Get the student by ID
@@ -105,7 +101,6 @@ public class StudentController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);  // 404 if not found
         }
 
-        // Check if the student has a profile image and delete it
         if (existingStudent.getProfile() != null && !existingStudent.getProfile().isEmpty()) {
             String imagePath = existingStudent.getProfile().replace("http://localhost:8080/images/", "");
             File profileImage = new File("C:/Users/z046705/Documents/Dynamic Images/" + imagePath);

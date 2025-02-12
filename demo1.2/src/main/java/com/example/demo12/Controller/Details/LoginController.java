@@ -50,6 +50,12 @@ public class LoginController {
 
     @PostMapping("/student_verify")
     public ResponseEntity<LoginResponse> verifyEmail(@RequestBody LoginRequest request) {
+        if (request.getEmail() == null || !request.getEmail().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            throw new IllegalArgumentException("Invalid email format");
+        }
+        if (request.getPassword() == null || request.getPassword().isEmpty()) {
+            throw new IllegalArgumentException("Password is required");
+        }
         String email = request.getEmail();
         Student user = loginService.findByEmailStudent(email);
         LoginResponse response = new LoginResponse();
@@ -87,6 +93,12 @@ public class LoginController {
     // Endpoint to verify Manager email
     @PostMapping("/manager_verify")
     public ResponseEntity<LoginResponse> verifyEmailm(@RequestBody LoginRequest request) {
+        if (request.getEmail() == null || !request.getEmail().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            throw new IllegalArgumentException("Invalid email format");
+        }
+        if (request.getPassword() == null || request.getPassword().isEmpty()) {
+            throw new IllegalArgumentException("Password is required");
+        }
         String email = request.getEmail();
         Manager user = loginService.findByEmailManager(email);
         LoginResponse response = new LoginResponse();
@@ -123,6 +135,12 @@ public class LoginController {
 
     @PostMapping("/trainer_verify")
     public ResponseEntity<LoginResponse> verifyEmailt(@RequestBody LoginRequest request) {
+        if (request.getEmail() == null || !request.getEmail().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            throw new IllegalArgumentException("Invalid email format");
+        }
+        if (request.getPassword() == null || request.getPassword().isEmpty()) {
+            throw new IllegalArgumentException("Password is required");
+        }
         String email = request.getEmail();
         Trainer user = loginService.findByEmailTrainer(email);
         LoginResponse response = new LoginResponse();
@@ -179,6 +197,7 @@ public class LoginController {
             loginService.sendVerificationCode(email, verificationCode);
 
             response.setMsg("Verification code sent to your email.");
+            response.getPassword();
             return ResponseEntity.ok(response);
         } else {
             response.setMsg("Email not found.");

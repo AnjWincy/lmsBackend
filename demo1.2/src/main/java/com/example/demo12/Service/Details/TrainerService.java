@@ -1,6 +1,6 @@
 package com.example.demo12.Service.Details;
 
-import com.example.demo12.Controller.Details.TrainerController;
+
 import com.example.demo12.Model.details.Trainer;
 import com.example.demo12.Repository.DetailsRepository.TrainerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +14,8 @@ public class TrainerService {
     @Autowired
     TrainerRepository trainerRepository;
 
+
+
     public Trainer saveOrUpdateTrainer(Trainer trainer) {
         // Check if trainer has a valid ID and exists in the database
         if (trainer.getTrainer_id() != null && trainerRepository.existsById(trainer.getTrainer_id())) {
@@ -25,9 +27,7 @@ public class TrainerService {
         }
     }
 
-    // Get all trainers
     public List<Trainer> getAllTrainers() {
-
         return trainerRepository.findAll();
     }
 
@@ -36,10 +36,11 @@ public class TrainerService {
         return trainerRepository.findById(trainer_id);
     }
 
-    // Delete trainer by ID
+
     public void deleteTrainer(String trainer_id) {
         trainerRepository.deleteById(trainer_id);
     }
+
 
     public Long countTrainers(){
         return trainerRepository.count();
